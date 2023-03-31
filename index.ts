@@ -1,10 +1,11 @@
-import express, { Express, Request, Response} from "express"
+import express, { Express } from "express"
 import { DataSource } from "typeorm"
 import bodyParser from "body-parser"
 import dotenv from "dotenv"
 import cors from "cors"
 
 import { Task } from "./src/tasks/tasks.entity"
+import { tasksRouter } from "./src/tasks/tasks.router"
 
 // instantiate express app
 const app: Express = express()
@@ -36,11 +37,6 @@ export const AppDataSource = new DataSource({
 // define server port
 const port = process.env.PORT
 
-// create a default route
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server Running")
-})
-
 // initialize data source and listen to the port
 AppDataSource.initialize().then(() => {
   app.listen(port)
@@ -48,3 +44,5 @@ AppDataSource.initialize().then(() => {
 }).catch((err) => {
   console.error("Error during Data Source initialization", err)
 })
+
+app.use("/", tasksRouter)
