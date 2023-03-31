@@ -1,10 +1,25 @@
 import express, { Express, Request, Response} from "express"
-import dotenv from "dotenv"
 import { DataSource } from "typeorm"
+import bodyParser from "body-parser"
+import dotenv from "dotenv"
+import cors from "cors"
+
+import { Task } from "./src/tasks/tasks.entity"
 
 // instantiate express app
 const app: Express = express()
 dotenv.config()
+
+// parse request body
+app.use(bodyParser.json())
+
+// use CORS
+let corsOptions = {
+  origin: process.env.FRONTEND,
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(cors(corsOptions))
 
 // create database connection
 export const AppDataSource = new DataSource({
@@ -14,6 +29,7 @@ export const AppDataSource = new DataSource({
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DATABASE,
+  entities: [Task],
   synchronize: process.env.NODE_ENV !== "production"
 })
 
