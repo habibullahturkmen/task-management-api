@@ -1,3 +1,15 @@
 ### Fetch all tasks
 GET http://localhost:3200/tasks
 Content-Type: application/json
+
+### Create a new task
+POST http://localhost:3200/tasks
+Content-Type: application/json
+
+{
+  "title": "Contact Us Page",
+  "date": "2021-02-02T12:00:00Z",
+  "description": "Create a Contact Us Page",
+  "priority": "high",
+  "status": "inProgress"
+}

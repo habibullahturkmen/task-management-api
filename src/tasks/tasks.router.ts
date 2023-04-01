@@ -1,13 +1,13 @@
-import { Router, Request, Response } from "express"
-import { TasksController } from "./tasks.controller"
+import { Router } from "express"
+
+import { taskController } from "./tasks.controller"
+import { createValidator } from "./tasks.validator"
 
 // initiate the router function
 export const tasksRouter: Router = Router()
 
-// create a get tasks route
-tasksRouter.get("/tasks", async (req: Request, res: Response) => {
-  const taskController = new TasksController()
-  const allTasks = await taskController.getAll()
-  res.json(allTasks).status(200)
-})
+// get all tasks
+tasksRouter.get("/tasks", taskController.getAll)
 
+// post a task
+tasksRouter.post("/tasks", createValidator, taskController.create)
